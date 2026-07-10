@@ -1,1 +1,6 @@
-{"src/components/CartSummary.jsx": "/cart?fixture=null-cart"}
+{
+  "src/components/CartSummary.jsx": {
+    "route": "/cart?fixture=null-cart",
+    "expected_behavior": "Your cart is empty"
+  }
+}

@@ -11,6 +11,7 @@ Outputs: /tmp/verdict_A.json   (gates.certify_a output, verbatim)
          /tmp/final_A.json     ({schema, verdict, evidence, location} bundle
                                 — the single file the agent relays verbatim)
 """
+import hashlib
 import json
 import sys
 from pathlib import Path
@@ -40,7 +41,17 @@ def main() -> int:
         "evidence": evidence,
         "location": location,
     }))
-    print("wrote /tmp/final_A.json")
+    final_path = Path("/tmp/final_A.json")
+    digest = hashlib.sha256(final_path.read_bytes()).hexdigest()
+    Path("/tmp/final_A.sha256").write_text(digest)
+    nonce_file = Path("/work/nonce.txt")
+    nonce = nonce_file.read_text().strip() if nonce_file.exists() else ""
+    Path("/tmp/receipt.json").write_text(json.dumps({
+        "schema": "proofrun/receipt@1",
+        "phase": "A",
+        "nonce": nonce,
+    }))
+    print("wrote /tmp/final_A.json + receipt")
     return 0
 
 

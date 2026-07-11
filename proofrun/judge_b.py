@@ -41,7 +41,17 @@ def main() -> int:
         "patch": patch_text,
         "patch_sha256": hashlib.sha256(patch_text.encode()).hexdigest(),
     }))
-    print("wrote /tmp/final_B.json")
+    final_path = Path("/tmp/final_B.json")
+    digest = hashlib.sha256(final_path.read_bytes()).hexdigest()
+    Path("/tmp/final_B.sha256").write_text(digest)
+    nonce_file = Path("/work/nonce.txt")
+    nonce = nonce_file.read_text().strip() if nonce_file.exists() else ""
+    Path("/tmp/receipt.json").write_text(json.dumps({
+        "schema": "proofrun/receipt@1",
+        "phase": "B",
+        "nonce": nonce,
+    }))
+    print("wrote /tmp/final_B.json + receipt")
     return 0
 
 

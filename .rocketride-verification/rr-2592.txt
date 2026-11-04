@@ -1,0 +1,2 @@
+Temporary fixture for owner-authorized RocketRide GitHub tool verification.
+This branch is only for testing reviewer requests and will not be merged.
